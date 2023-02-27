@@ -1,6 +1,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import '../css/common.css'
+import '../css/02-timer.css'
 
 const options = {
   minDate: '1970-01-01',

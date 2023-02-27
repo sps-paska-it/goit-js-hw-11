@@ -1,0 +1,16 @@
+input,
+button {
+    display: inline-flex;
+    justify-content: center;
+}
+
+.timer {
+    display: flex;
+    gap: 30px;
+    /* justify-content: center; */
+}
+
+.value {
+    display: block;
+    justify-content: center;
+}
