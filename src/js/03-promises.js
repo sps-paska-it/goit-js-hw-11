@@ -14,9 +14,6 @@ const createPromise = (position, delay) => {
   .catch(({ position, delay }) => {
     console.log(`❌ Rejected promise ${position} in ${delay}ms`);
   })
-  .finally(() => {
-    console.log('Rejected promise');
-  });
 };
 
 const refs = {
