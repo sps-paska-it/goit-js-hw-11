@@ -1,19 +1,14 @@
 const createPromise = (position, delay) => {
-  new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       const shouldResolve = Math.random() > 0.3;
       if (shouldResolve) {
-        resolve ({ position, delay });
+        resolve({ position, delay });
       } else {
-        reject ({ position, delay });
+        reject({ position, delay });
       }
-    },delay);
-  }).then(({ position, delay }) => {
-    console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    console.log(`❌ Rejected promise ${position} in ${delay}ms`);
-  })
+    }, delay);
+  });
 };
 
 const refs = {
@@ -23,15 +18,22 @@ const refs = {
   amount: document.querySelector('input[name$="amount"]'),
 };
 
-const onSubmitForm = (e) => {
-e.preventDefault();
-const amount = Number(refs.amount.value);
-const step = Number(refs.step.value);
-let delay = Number(refs.firstDelay.value);
-for (let i = 1; i <= amount; i++) {
-  createPromise(i, delay)
-  delay += step;
-}
+const onSubmitForm = e => {
+  e.preventDefault();
+  const amount = Number(refs.amount.value);
+  const step = Number(refs.step.value);
+  let delay = Number(refs.firstDelay.value);
+  for (let i = 1; i <= amount; i++) {
+    createPromise(i, delay)
+      .then(({ position, delay }) => {
+        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
+        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+      });
+    delay += step;
+  }
+  e.target.reset();
 };
 
 refs.form.addEventListener('submit', onSubmitForm);

@@ -11,32 +11,30 @@ const refs = {
 };
 
 const color = {
-    intervaID: null,
-    isActive: false,
+  intervaID: null,
 
-    startChangeBgColor () {
-        refs.body.style.background = getRandomHexColor();
-    },
-    startBtn () {
-        if (this.isActive){
-            return;
-        }
-        this.isActive = true;
-     this.intervaID = setInterval(this.startChangeBgColor, 1000);
-    },
+  startChangeBgColor() {
+    refs.body.style.background = getRandomHexColor();
+  },
+  startBtn() {
+    refs.start.setAttribute('disabled', 'disabled');
+    refs.stop.removeAttribute('disabled', 'disabled');
+    this.intervaID = setInterval(this.startChangeBgColor, 1000);
+  },
 
-    stopBtn () {
-        clearInterval(this.intervaID);
-        this.isActive = false;
-    },
-}
+  stopBtn() {
+    clearInterval(this.intervaID);
+    refs.stop.setAttribute('disabled', 'disabled');
+    refs.start.removeAttribute('disabled', 'disabled');
+  },
+};
 
 const onStartChangeBgColor = () => {
-    color.startBtn()
-  };
+  color.startBtn();
+};
 
 const onStopChangeBgColor = () => {
-    color.stopBtn()
+  color.stopBtn();
 };
 
 refs.start.addEventListener('click', onStartChangeBgColor);
