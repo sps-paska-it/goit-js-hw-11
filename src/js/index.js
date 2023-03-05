@@ -28,7 +28,6 @@ const onFetchError = () => {
 
 const filterCorrectInput = response => {
   if (response.length > 10) {
-    console.log(response.length);
     return toMuchMatches();
   }
   renderFunctions(response);
