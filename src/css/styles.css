@@ -27,34 +27,4 @@ img {
   height: auto;
 }
 
-#search-box {
-  font: inherit;
-  padding: 8px;
-  max-width: 320px;
-  margin-bottom: 16px;
-  border-radius: 2px;
-  outline: none;
-  border: 1px solid black;
-  border-radius: 5px;
-}
 
-#search-box:focus-within {
-  border: 1px solid rgb(104, 182, 74);
-}
-
-ul {
-  list-style: none;
-}
-
-li {
-  display: flex;
-  row-gap: 15px;
-}
-
-.country-info__title,
-.country-list__item {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  margin-bottom: 20px;
-}

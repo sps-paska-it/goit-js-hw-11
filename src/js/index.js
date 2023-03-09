@@ -1,45 +1,28 @@
 import '../css/styles.css';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
-import { fetchCountries } from '../js/fetchCountries';
-import { renderFunctions } from './render_functions';
+import axios from "axios";
+import SimpleLightbox from "simplelightbox";
+import { fetchSearch } from '../js/fetch-search';
+// import { renderFunctions } from './render_functions';
 import { refs } from './refs';
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 1000;
 
-const onSearchCountry = e => {
+// console.log(refs.inputSearch.value);
+
+const onSearch = e => {
   const inputValue = e.target.value.trim();
-  refs.listCountries.innerHTML = '';
-  refs.cardCountry.innerHTML = '';
+  // refs.listCountries.innerHTML = '';
+  // refs.cardCountry.innerHTML = '';
   if (inputValue !== '') {
-    fetchCountries(inputValue).then(filterCorrectInput).catch(onFetchError);
+    fetchSearch(inputValue).then(resp => console.log(resp)).catch(error => console.log(error));
   }
-};
-
-const toMuchMatches = () => {
-  Notiflix.Notify.info(
-    'Too many matches found. Please enter a more specific name.'
-  );
-};
-
-const onFetchError = () => {
-  Notiflix.Notify.failure('Oops, there is no country with that name');
-};
-
-const filterCorrectInput = response => {
-  if (response.length > 10) {
-    return toMuchMatches();
-  }
-  renderFunctions(response);
-};
-
-const onMarkupCardCountry = response => {
-  console.log(response, 'card');
 };
 
 refs.inputSearch.addEventListener(
   'input',
   debounce(e => {
-    onSearchCountry(e);
+    onSearch(e);
   }, DEBOUNCE_DELAY)
 );
