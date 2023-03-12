@@ -1,5 +1,7 @@
 export const refs = {
   inputSearch: document.querySelector('input[name="searchQuery"]'),
-//   listCountries: document.querySelector('.country-list'),
+  btnSubmitForm: document.querySelector('.search-form'),
+  gallery: document.querySelector('.gallery'),
+  btnLoadMore: document.querySelector('.load-more'),
 //   cardCountry: document.querySelector('.country-info')
 };
