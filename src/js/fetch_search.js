@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { refs } from './refs';
-const axios = require('axios').default;
 const page = 1;
 
 export const fetchSearch = async page => {
