@@ -2,7 +2,7 @@ import '../css/index.css';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
-import "simplelightbox/dist/simple-lightbox.min.css";
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchSearch } from './fetch_search';
 import { renderFunctions } from './render_functions';
 import { refs } from './refs';
@@ -10,43 +10,63 @@ import { refs } from './refs';
 const sum = {
   totalHitsMarkup: 0,
   page: 1,
-}
+};
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionType: 'attr',
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 refs.btnLoadMore.classList.add('hidden');
 
-const onSearch = e => {
+const onSearch = async e => {
   e.preventDefault();
-  refs.gallery.innerHTML = '';
-sum.page = 1;
-  fetchSearch(sum.page).then(filterCorrectInput).catch(onFetchError);
+  refs.btnLoadMore.classList.add('hidden');
+  const inputValue = refs.inputSearch.value.trim();
+  if (inputValue !== '') {
+    refs.gallery.innerHTML = '';
+    sum.page = 1;
+    try {
+     const response = await fetchSearch(sum.page);
+     if (response.totalHits !== 0) {
+       filterCorrectInput(response)
+       return
+      }
+      emptyFetch()
+    } catch (error) {
+      console.error(error.message);
+    }
+    return;
+  }
+  Notiflix.Notify.info('Please enter a search request.');
 };
-
 
 const filterCorrectInput = response => {
   Notiflix.Notify.success(`Hooray! We found ${response.totalHits} images.`);
   renderFunctions(response);
-  
-  new SimpleLightbox('.gallery a', {
-    captionType: 'attr',
-    captionsData: 'alt',
-    captionDelay: 250,
-  });
+  lightbox.refresh();
+
   sum.totalHitsMarkup = 0;
   endImage(response);
 };
 
-const onAddImageNextPage = () => {
-    sum.page += 1;
-    fetchSearch(sum.page).then(endImage).catch(onFetchError)
+const onAddImageNextPage = async () => {
+  sum.page += 1;
+  try {
+    const response = await fetchSearch(sum.page);
+    endImage(response)
+   } catch (error) {
+     console.error(error.message);
+   }
 };
 
-const endImage = (response) => {
-  console.log(sum.totalHitsMarkup);
+const endImage = response => {
   sum.totalHitsMarkup += response.hits.length;
-  console.log(sum.totalHitsMarkup);
-  console.log(response.totalHits);
   if (response.totalHits === sum.totalHitsMarkup) {
-    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+    Notiflix.Notify.info(
+      "We're sorry, but you've reached the end of search results."
+    );
     refs.btnLoadMore.classList.add('hidden');
   } else {
     refs.btnLoadMore.classList.remove('hidden');
@@ -54,15 +74,11 @@ const endImage = (response) => {
   if (sum.totalHitsMarkup > 40) {
     renderFunctions(response);
 
-    new SimpleLightbox('.gallery a', {
-      captionType: 'attr',
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
+    lightbox.refresh();
   }
-};  
+};
 
-const onFetchError = () => {
+const emptyFetch = () => {
   refs.gallery.innerHTML = '';
   refs.btnLoadMore.classList.add('hidden');
   Notiflix.Notify.failure(

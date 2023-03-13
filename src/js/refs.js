@@ -3,5 +3,4 @@ export const refs = {
   btnSubmitForm: document.querySelector('.search-form'),
   gallery: document.querySelector('.gallery'),
   btnLoadMore: document.querySelector('.load-more'),
-//   cardCountry: document.querySelector('.country-info')
 };
