@@ -1,8 +1,6 @@
 import '../css/index.css';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import { lightbox } from './simplelightbox';
 import { fetchSearch } from './fetch_search';
 import { renderFunctions } from './render_functions';
