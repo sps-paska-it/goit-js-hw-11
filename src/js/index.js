@@ -3,6 +3,7 @@ import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { lightbox } from './simplelightbox';
 import { fetchSearch } from './fetch_search';
 import { renderFunctions } from './render_functions';
 import { refs } from './refs';
@@ -11,12 +12,6 @@ const sum = {
   totalHitsMarkup: 0,
   page: 1,
 };
-
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionType: 'attr',
-  captionsData: 'alt',
-  captionDelay: 250,
-});
 
 refs.btnLoadMore.classList.add('hidden');
 
@@ -30,7 +25,7 @@ const onSearch = async e => {
     try {
      const response = await fetchSearch(sum.page);
      if (response.totalHits !== 0) {
-       filterCorrectInput(response)
+       managementFunctionsRender(response)
        return
       }
       emptyFetch()
@@ -42,7 +37,7 @@ const onSearch = async e => {
   Notiflix.Notify.info('Please enter a search request.');
 };
 
-const filterCorrectInput = response => {
+const managementFunctionsRender = response => {
   Notiflix.Notify.success(`Hooray! We found ${response.totalHits} images.`);
   renderFunctions(response);
   lightbox.refresh();
