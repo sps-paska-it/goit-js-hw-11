@@ -7,10 +7,6 @@ export const fetchSearch = async page => {
   const BASE = 'https://pixabay.com/api/';
   const inputValue = refs.inputSearch.value.trim();
   const URL = `${BASE}?key=${API_KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${page}`;
-  try {
     const response = await axios(URL);
     return response.data;
-  } catch (error) {
-    console.error(error.message);
-  }
 };
